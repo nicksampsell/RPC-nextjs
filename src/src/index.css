@@ -1,0 +1,54 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+@tailwind variants;
+
+
+.hideSpinner {
+	-moz-appearance: textfield;
+}
+.hideSpinner::-webkit-inner-spin-button,
+.hideSpinner::-webkit-outer-spin-button {
+
+    -webkit-appearance: none;
+}
+
+.ProseMirror
+{
+	position: static !important
+}
+
+.narrowScrollbar {
+	scrollbar-width: thin;
+}
+.narrowScrollbar::-webkit-scrollbar {
+	width: 10px;
+}
+.narrowScrollbar::-webkit-scrollbar-track {
+	background: white;
+}
+.narrowScrollbar::-webkit-scrollbar-thumb {
+	background-color: auto;
+	border-radius: 100%;
+}
+
+
+
+@layer base
+{
+	body {
+		@apply bg-stone-200;
+	}
+	input, textarea, select {
+		@apply read-only:bg-gray-50 read-only:text-gray-500;
+	}
+}
+
+@layer components
+{
+	.has-error input, .has-error textarea, .has-error select, .react-select-error
+	{
+		@apply bg-red-50;
+	}
+}
+
