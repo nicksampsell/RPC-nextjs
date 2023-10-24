@@ -8,11 +8,11 @@ export default function Page()
 {
     return (
         <>
-        <DepartmentSelector />
-        <EmployeeInformation />
-        <PositionInformation />
-        <RequirementsArea />
-        <EditorToolbar />
+        <EmployeeInformation isNewEmployee={true} />        
+        <DepartmentSelector isNewEmployee={true} />
+        <PositionInformation isNewEmployee={true} />
+        <RequirementsArea isNewEmployee={true}/>
+        <EditorToolbar isNewEmployee={true}/>
        	</>
     )
 }

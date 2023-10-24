@@ -11,7 +11,7 @@ export default function DepartmentSelector(props)
 		<div className="p-5 border shadow rounded">
 			<div className="flex flex-row justify-between items-center bg-blue-300 -m-5 mb-5 p-5 rounded-t">
 				<h2 className="text-xl">
-					{(props.rpcType == "newEmployee" ? "Step 2: " : "Step 1: ")} Department Information
+					{(props.isNewEmployee ? "Step 2: " : "Step 1: ")} Department Information
 				</h2>
 			</div>
 			<div className="flex flex-col justifyt-between md:space-y-3 w-full">
