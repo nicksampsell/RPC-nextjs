@@ -27,7 +27,29 @@ type Store = {
     RPCId: number | string | null
 };
 
-export const useStore = create<Store>((set) => ({
+type Action = {
+    setOrganizations: any,
+    setAllDepartments: any,
+    setAllPositions: any,
+    setAllEmployees: any,
+    setCurrentOrganization: any,
+    setCurrentDepartment: any,
+    setCurrentEmployee: any,
+    setCurrentPosition: any,
+    setBulkEmployees: any,
+    setRPCActionCategory: any,
+    setRPCAction: any,
+    setRPCData: any,
+    setRPCFormId: any,
+    setRPCId: any,
+    setRPCDataFields: any,
+    updateSingleField: any,
+    updateEmployeeInfo: any,
+    clearRPCData: any,
+    clearForm: any
+};
+
+export const useStore = create<Store & Action>((set) => ({
     allOrganizations: null,
     allDepartments: null,
     currentOrganization: null,

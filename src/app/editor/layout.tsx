@@ -1,25 +1,28 @@
+'use client'
 import Link from 'next/Link';
+import {MdOutlineChangeCircle} from 'react-icons/md';
+import {useStore} from '@/app/editor/globalStore'
 
 export default function EditorLayout({children} : {children: React.ReactNode})
 {
+    const clearForm = useStore((state) => state.clearForm);
     return (
-        <div className="m-10">
-            <div className="border shadow rounded p-5 col-span-6 bg-white mb-3">
-                <div class="flex flex-row justify-between items-center bg-blue-300 -m-5 mb-5 p-5 rounded-t">
-                    <h2 class="text-xl">What type of RPC are you creating?</h2>
-                </div>
-                <div className="flex flex-row justify-between w-full space-x-3">
-                    <Link href="/editor/new" className="bg-blue-500 basis-full gap-1 rounded-md bg-blue-600 p-3 min-h-3 
-                    text-center font-semibold text-white hover:bg-blue-800">New Employee</Link>
-                    <Link href="/editor/current" className="bg-blue-500 basis-full gap-1 rounded-md bg-blue-600 p-3 min-h-3 
-                    text-center font-semibold text-white hover:bg-blue-800">Modify an Existing Employee</Link>
-                    <Link href="/editor/bulk" className="bg-blue-500 basis-full gap-1 rounded-md bg-blue-600 p-3 min-h-3 
-                    text-center font-semibold text-white hover:bg-blue-800">Create a Bulk RPC</Link>
-                </div>
+        <div className="m-auto mt-10 mb-10 w-4/5 ">
+            <div className="text-right">
+                <Link href="/" legacyBehavior>
+                    <a className="border p-3 bg-blue-500 text-white rounded shadow mb-5 inline-flex flex-row gap-1 items-center justify-between f-right"
+                    onClick={(e:any) => {
+                        clearForm();
+                    }}>
+                        <MdOutlineChangeCircle className="d-inline text-2xl"/> <span>Change RPC Type</span>
+                    </a>                    
+                </Link>
+
             </div>
-            <div className="border shadow rounded p-5 col-span-6 bg-white mb-3">
+            
                 <section>{children}</section>
-            </div>
         </div>
     )
 }
+
+

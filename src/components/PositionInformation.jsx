@@ -1,7 +1,7 @@
-export default function PositionInformation()
+export default function PositionInformation(props)
 {
 	return(
-		<div className="p-5 border shadow rounded">
+		<div className="p-5 border shadow rounded h-full">
 			<div className="flex flex-row justify-between items-center bg-blue-300 -m-5 mb-5 p-5 rounded-t">
 				<h2 className="text-xl">Step 3: Position Information</h2>
 			</div>
@@ -55,9 +55,9 @@ export default function PositionInformation()
 			</div>
 			<div className="flex flex-col justifyt-between md:space-y-3 w-full">
 				<div>
-					<label htmlFor="City">City</label>
+					<label htmlFor="lastEmployee">Last Employee in Position</label>
 					<input type="text" 
-					id="City" 
+					id="lastEmployee" 
 					className="p-3 font-medium rounded-md w-full border border-slate-300 placeholder:opacity-60" />
 				</div>
 			</div>
@@ -69,38 +69,7 @@ export default function PositionInformation()
 					className="p-3 font-medium rounded-md w-full border border-slate-300 placeholder:opacity-60" />
 				</div>
 			</div>																		
-			<div className="flex flex-col justifyt-between md:space-y-3 w-full">
-				<div>
-					<label htmlFor="zip">Zip Code</label>
-					<input type="text" 
-					id="zip" 
-					className="p-3 font-medium rounded-md w-full border border-slate-300 placeholder:opacity-60" />
-				</div>
-			</div>
-			<div className="flex flex-col justifyt-between md:space-y-3 w-full">
-				<div>
-					<label htmlFor="phone">Phone</label>
-					<input type="text" 
-					id="phone" 
-					className="p-3 font-medium rounded-md w-full border border-slate-300 placeholder:opacity-60" />
-				</div>
-			</div>
-			<div className="flex flex-col justifyt-between md:space-y-3 w-full">
-				<div>
-					<label htmlFor="email">Email Address</label>
-					<input type="text" 
-					id="email" 
-					className="p-3 font-medium rounded-md w-full border border-slate-300 placeholder:opacity-60" />
-				</div>
-			</div>
-			<div className="flex flex-col justifyt-between md:space-y-3 w-full">
-				<div>
-					<label htmlFor="employeeNumber">Employee Number</label>
-					<input type="text" 
-					id="employeeNumber" 
-					className="p-3 font-medium rounded-md w-full border border-slate-300 placeholder:opacity-60" />
-				</div>
-			</div>								
+								
 		</div>
 	);
 }

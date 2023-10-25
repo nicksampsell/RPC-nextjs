@@ -1,4 +1,4 @@
-export default function EditorToolbar()
+export default function EditorToolbar(props)
 {
 
 	return(

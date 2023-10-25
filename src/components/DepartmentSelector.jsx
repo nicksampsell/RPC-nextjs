@@ -8,7 +8,7 @@ export default function DepartmentSelector(props)
 
 
 	return(
-		<div className="p-5 border shadow rounded">
+		<div className="p-5 border shadow rounded h-full">
 			<div className="flex flex-row justify-between items-center bg-blue-300 -m-5 mb-5 p-5 rounded-t">
 				<h2 className="text-xl">
 					{(props.isNewEmployee ? "Step 2: " : "Step 1: ")} Department Information

@@ -1,7 +1,7 @@
 export default function RequirementsArea(props)
 {
 	return(
-		<div className="p-5 border shadow rounded">
+		<div className="p-5 border shadow rounded h-full">
 			<div className="flex flex-row justify-between items-center bg-blue-300 -m-5 mb-5 p-5 rounded-t">
 				<h2 className="text-xl">
 					{(props.isBulk) ? "Step 3: " : (props.isNewEmployee) ? "Step4: " : "Step 5: "} Requirements &amp; Supporting Documentation</h2>
