@@ -4,7 +4,7 @@ export default function DateSelector(props)
 {
 	
     return (
-        <div className="p-5 border shadow rounded h-full">
+        <div className="p-5 border shadow rounded h-full bg-white">
 			<div className="flex flex-row justify-between items-center rounded-t">
 
                 <h1 className="text-2xl">Request of Personnel Change & Extended Payroll Certificate</h1>

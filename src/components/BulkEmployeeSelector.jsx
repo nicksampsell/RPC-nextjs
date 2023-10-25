@@ -4,7 +4,7 @@ export default function BulkEmployeeSelector(props)
 {
 	const globalStore = useStore();
 	return(
-		<div className="p-5 border shadow rounded h-full">
+		<div className="p-5 border shadow rounded h-full bg-white">
 			<div className="flex flex-row justify-between items-center bg-blue-300 -m-5 mb-5 p-5 rounded-t">
 				<h2 className="text-xl">Step 2: Select Employee</h2>
 			</div>
@@ -18,6 +18,10 @@ export default function BulkEmployeeSelector(props)
 						<option className="p-3 text-l">Employee Name</option>
 					</select>
 				</div>
+				<div className="flex flex-row justify-start items-center ml-1">
+					<input type="checkbox" id="includeAllDepartments" className="mr-2" />
+					<label htmlFor="includeAllDepartments">Include employees from <strong>ALL</strong> departments you have access to in the dropdown?</label>
+				</div>				
 			</div>
 		</div>
 
