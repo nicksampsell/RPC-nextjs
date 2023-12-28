@@ -1,6 +1,6 @@
 'use client'
 import { create } from 'zustand'
-import { produce } from 'immer'
+import { immer } from 'zustand/middleware/immer'
 
 type KeyValuePair = {
     Key: number | string;
@@ -8,118 +8,149 @@ type KeyValuePair = {
 };
 
 type Store = {
-    allOrganizations: Array<KeyValuePair> | Array<Object> | null,
-    allDepartments: Array<KeyValuePair> | Array<Object> | null,
-    currentOrganization: Array<KeyValuePair> | Object | null,
-    currentDepartment: Array<KeyValuePair> | Object | null,
-    allPositions: Array<KeyValuePair> | Array<Object> | null,
-    allEmployees: Array<KeyValuePair> | Array<Object> | null,
-    currentPoisition: Array<KeyValuePair> | Object | null,
-    oldPosition: Array<KeyValuePair> | Object | null,
-    currentEmployee: Array<KeyValuePair> | Object | null,
-    currentEmployeeOriginalInformation: Array<KeyValuePair> | Object | null,
+    allOrganizations: Array<KeyValuePair> | null,
+    allDepartments: Array<KeyValuePair> | null,
+    currentOrganization: KeyValuePair | null,
+    currentDepartment: KeyValuePair | null,
+    allPositions: Array<KeyValuePair> | null,
+    allEmployees: Array<KeyValuePair> | null,
+    currentPosition: KeyValuePair | null,
+    oldPosition: KeyValuePair | null,
+    currentEmployee: KeyValuePair | null,
+    currentEmployeeOriginalInformation: KeyValuePair | null,
     bulkEmployees: Array<KeyValuePair> | null,
     RPCActionCategory: number | string | null,
     RPCAction: number | string | null,
     RPCData: Array<KeyValuePair> | null,
     RPCDataFields: Array<KeyValuePair> | null,
-    RPCFormId: string | null,
+    RPCFormId: string | number | null,
     RPCId: number | string | null
 };
 
 type Action = {
-    setOrganizations: any,
-    setAllDepartments: any,
-    setAllPositions: any,
-    setAllEmployees: any,
-    setCurrentOrganization: any,
-    setCurrentDepartment: any,
-    setCurrentEmployee: any,
-    setCurrentPosition: any,
-    setBulkEmployees: any,
-    setRPCActionCategory: any,
-    setRPCAction: any,
-    setRPCData: any,
-    setRPCFormId: any,
-    setRPCId: any,
-    setRPCDataFields: any,
-    updateSingleField: any,
-    updateEmployeeInfo: any,
-    clearRPCData: any,
-    clearForm: any
+    setAllOrganizations: (organizations: Array<KeyValuePair> | null) => void,
+    setAllDepartments: (departments: Array<KeyValuePair> | null) => void,
+    setAllPositions: (positions: Array<KeyValuePair> | null) => void,
+    setAllEmployees: (employees: Array<KeyValuePair> | null) => void,
+    setCurrentOrganization: (organization: KeyValuePair | null) => void,
+    setCurrentDepartment: (department: KeyValuePair | null) => void,
+    setCurrentEmployee: (employee: KeyValuePair | null) => void,
+    setCurrentPosition: (position: KeyValuePair | null) => void,
+    setBulkEmployees: (employees: Array<KeyValuePair> | null) => void,
+    setRPCActionCategory: (category: string | number | null) => void,
+    setRPCAction: (action: string | number | null) => void,
+    setRPCData: (fieldId: string | number, value: string | number) => void,
+    setRPCFormId: (formId: string | number | null) => void,
+    setRPCId: (rpcId: string | number | null) => void,
+    setRPCDataFields: (fields: Array<KeyValuePair> | null) => void,
+    updateSingleField: (objectId: string, keyName: string, value: any) => void,
+    updateEmployeeInfo: (field: string | number, value: string | number) => void,
+    updatePosition: (position: KeyValuePair | null) => void,
+    clearRPCData: () => void,
+    clearForm: () => void
 };
 
-export const useStore = create<Store & Action>((set) => ({
-    allOrganizations: null,
-    allDepartments: null,
-    currentOrganization: null,
-    currentDepartment: null,
-    allPositions: null,
-    allEmployees: null,
-    currentPoisition: null,
-    oldPosition: null,
-    currentEmployee: null,
-    currentEmployeeOriginalInformation: null,
-    bulkEmployees: null,
-    RPCActionCategory: null,
-    RPCAction: null,
-    RPCData: null,
-    RPCDataFields: null,
-    RPCFormId: null,
-    RPCId: null,
+export const useStore = create<Store & Action>(
+    immer((set) => ({
+        allOrganizations: null,
+        allDepartments: null,
+        currentOrganization: null,
+        currentDepartment: null,
+        allPositions: null,
+        allEmployees: null,
+        currentPosition: null,
+        oldPosition: null,
+        currentEmployee: null,
+        currentEmployeeOriginalInformation: null,
+        bulkEmployees: null,
+        RPCActionCategory: null,
+        RPCAction: null,
+        RPCData: null,
+        RPCDataFields: null,
+        RPCFormId: null,
+        RPCId: null,
 
-
-    setOrganizations: (organizations: Array<KeyValuePair> | Array<object>) => set(produce((state) =>  state.allOrganizations = organizations )),
-    setAllDepartments: (departments: Array<KeyValuePair> | Array<object>) => set(produce((state) =>  state.allDepartments = departments )),
-    setAllPositions: (positions: Array<KeyValuePair> | Array<object>) => set(produce((state) =>  state.allPositions = positions )),
-    setAllEmployees: (employees: Array<KeyValuePair> | Array<object>) => set(produce((state) => state.allEmployees = employees )),
-    setCurrentOrganization: (organization: Array<KeyValuePair> | object) => set(produce((state) => state.currentOrganization = organization )),
-    setCurrentDepartment: (department: Array<KeyValuePair> | object) => set(produce((state) => state.currentDepartment = department )),
-    setCurrentEmployee: (employee: Array<KeyValuePair> | object) => set(produce((state) => { 
-                                                    state.currentEmployee = employee, 
-                                                    state.currentEmployeeOriginalInformation = employee 
-                                                })),
-    setCurrentPosition: (position: Array<KeyValuePair> | object) => set(produce((state) => {
-                                                    state.currentPosition = position 
-                                                    state.oldPosition = position
-                                                })),
-    setBulkEmployees: (employees: Array<KeyValuePair>) => set(produce((state) => state.bulkEmployees = employees )),
-    setRPCActionCategory: (category: string | number) => set(produce((state) => state.RPCActionCategory = category )),
-    setRPCAction: (action: string | number) => set(produce((state) => state.RPCActionCategory = action )),
-    setRPCData: (fieldId : string | number, value : string | number) => set(produce((state) =>  state[fieldId] = value )),
-    setRPCFormId: (formId: string | number) => set(produce((state) =>  state.RPCFormId = formId )),
-    setRPCId: (rpcId: string | number) => set(produce((state) =>  state.RPCId = rpcId )),
-    setRPCDataFields: (fields: Array<KeyValuePair>) => set(produce((state) => state.RPCDataFields = fields )),
-    updateSingleField: (objectId: string, keyName: string, value: any) => set(produce((state) => {
-        if(state[objectId]?.hasOwnProperty(keyName))
-        {
-            state[objectId][keyName] = value
-        }
-        else
-        {
-            state[objectId] = { ...state[objectId], [keyName]: value }
-        }
-    })),
-    updateEmployeeInfo: (field: string | number, value: string | number) => set(produce((state) =>  state.currentEmployee[field] = value )),
-    updatePosition: (position: Array<KeyValuePair> | object) => set(produce((state) => state.currentPoisition = position )),
-    clearRPCData: () => set(produce((state) => state.RPCData = null )),
-    clearForm: () => set(produce((state) => {
-            state.allOrganizations = null
-            state.allDepartments = null
-            state.currentOrganization = null
-            state.currentDepartment = null
-            state.allPositions = null
-            state.allEmployees = null
-            state.currentPoisition = null
-            state.oldPosition = null
-            state.currentEmployee = null
-            state.currentEmployeeOriginalInformation = null
-            state.bulkEmployees = null
-            state.RPCActionCategory = null
-            state.RPCAction = null
-            state.RPCData = null
-            state.RPCDataFields = null
-            state.RPCFormId = null
-            state.RPCId = null
-    })) 
-}));
+        setAllOrganizations: (organizations) => set((state) => {
+            state.allOrganizations = organizations;
+        }),
+        setAllDepartments: (departments) => set((state) => {
+            state.allDepartments = departments;
+        }),
+        setAllPositions: (positions) => set((state) => {
+            state.allPositions = positions;
+        }),
+        setAllEmployees: (employees) => set((state) => {
+            state.allEmployees = employees;
+        }),
+        setCurrentOrganization: (organization) => set((state) => {
+            state.currentOrganization = organization;
+        }),
+        setCurrentDepartment: (department) => set((state) => {
+            state.currentDepartment = department;
+        }),
+        setCurrentEmployee: (employee) => set((state) => {
+            state.currentEmployee = employee;
+            state.currentEmployeeOriginalInformation = employee;
+        }),
+        setCurrentPosition: (position) => set((state) => {
+            state.currentPosition = position;
+            state.oldPosition = position;
+        }),
+        setBulkEmployees: (employees) => set((state) => {
+            state.bulkEmployees = employees;
+        }),
+        setRPCActionCategory: (category) => set((state) => {
+            state.RPCActionCategory = category;
+        }),
+        setRPCAction: (action) => set((state) => {
+            state.RPCAction = action;
+        }),
+        setRPCData: (fieldId, value) => set((state) => {
+            state.RPCData[fieldId] = value;
+        }),
+        setRPCFormId: (formId) => set((state) => {
+            state.RPCFormId = formId;
+        }),
+        setRPCId: (rpcId) => set((state) => {
+            state.RPCId = rpcId;
+        }),
+        setRPCDataFields: (fields) => set((state) => {
+            state.RPCDataFields = fields;
+        }),
+        updateSingleField: (objectId, keyName, value) => set((state) => {
+            if (state[objectId]?.hasOwnProperty(keyName)) {
+                state[objectId][keyName] = value;
+            } else {
+                state[objectId] = { ...state[objectId], [keyName]: value };
+            }
+        }),
+        updateEmployeeInfo: (field, value) => set((state) => {
+            state.currentEmployee[field] = value;
+        }),
+        updatePosition: (position) => set((state) => {
+            state.currentPosition = position;
+        }),
+        clearRPCData: () => set((state) => {
+            state.RPCData = null;
+        }),
+        clearForm: () => set((state) => {
+            state.allOrganizations = null;
+            state.allDepartments = null;
+            state.currentOrganization = null;
+            state.currentDepartment = null;
+            state.allPositions = null;
+            state.allEmployees = null;
+            state.currentPosition = null;
+            state.oldPosition = null;
+            state.currentEmployee = null;
+            state.currentEmployeeOriginalInformation = null;
+            state.bulkEmployees = null;
+            state.RPCActionCategory = null;
+            state.RPCAction = null;
+            state.RPCData = null;
+            state.RPCDataFields = null;
+            state.RPCFormId = null;
+            state.RPCId = null;
+        })
+    }))
+);

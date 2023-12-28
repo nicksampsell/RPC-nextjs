@@ -1,18 +1,22 @@
+'use client'
 import {
   useQuery,
   useMutation,
   useQueryClient,
   QueryClient,
   QueryClientProvider,
-} from 'react-query'
-import axios from 'axios'
+} from '@tanstack/react-query'
 import { useFormContext} from 'react-hook-form'
+import axios from 'axios'
 
+axios.defaults.baseURL = 'https://localhost:7080'
+axios.defaults.withCredentials = true;
 
 export const useGetOrganizations = () =>
-	useQuery(['getAllOrganizations'],
-	async () => {
-		const { data } = await axios.get('/Api/RPCAPI/GetUserOrganizations',
+	useQuery({
+	queryKey: ['getAllOrganizations'],
+	queryFn: async () => {
+		const { data } = await axios.get('/Api/organization/search',
 		{
 			withCredentials: true,
 			headers: {
@@ -21,13 +25,13 @@ export const useGetOrganizations = () =>
 		})
 		return data
 	}
-)
+})
 
 export const useGetDepartments = (organizationId) =>
 	useQuery({
 	queryKey:['getAllDepartments',organizationId],
 	queryFn: async () => {
-		const { data } = await axios.get('/Api/RPCAPI/GetUserDepartments/' + organizationId,
+		const { data } = await axios.get('/api/department/search?organizationId=' + organizationId,
 		{
 			withCredentials: true,
 			headers: {
@@ -73,7 +77,7 @@ else
 return useQuery({
 	queryKey: ['getFormerEmployee', inputtedValue],
 	queryFn: async () => {
-		const { data } = await axios.get('/Api/PositionApi/GetPreviousEmployees/' + positionId,
+		const { data } = await axios.get('/Api/GetPreviousEmployees/' + positionId,
 		{
 			withCredentials: true,
 			headers: {
@@ -86,12 +90,30 @@ return useQuery({
 })
 }
 
-export const useGetEmployeesAndPositions = (departmentId, includeAllDepartments) => 
+
+export const useGetPositions = (organizationId, departmentId) => 
 
 useQuery({
-	queryKey: ['getEmployeesAndPositions', departmentId, includeAllDepartments],
+	queryKey: ['getPositions', organizationId, departmentId],
 	queryFn: async() => {
-		const { data } = await axios.get('/Api/RPCAPI/GetPositionsAndEmployeesByDepartment/' + departmentId + '/' + !!includeAllDepartments,
+		const { data } = await axios.get('/api/position/search?organizationId=' + organizationId + '&departmentId=' + departmentId,
+		{
+			withCredentials: true,
+			headers: {
+				'X-Requested-With': 'XMLHttpRequest'
+			}
+		})
+		return data
+	},
+	enabled: !!departmentId
+})
+
+export const useGetEmployeesAndPositions = (departmentId, includeAllDepartments, includeFormerEmployees) => 
+
+useQuery({
+	queryKey: ['getEmployeesAndPositions', departmentId, includeAllDepartments, includeFormerEmployees],
+	queryFn: async() => {
+		const { data } = await axios.get('/Api/RPCAPI/GetPositionsAndEmployeesByDepartment/' + departmentId + '/' + !!includeAllDepartments + '/' + !!includeFormerEmployees,
 		{
 			withCredentials: true,
 			headers: {

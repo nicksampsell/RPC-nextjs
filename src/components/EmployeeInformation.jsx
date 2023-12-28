@@ -1,7 +1,11 @@
+'use client'
 import {SSNFieldNewEmployee, SSNField} from './SSNField'
+import {useStore} from '@/app/editor/globalStore'
+import {useEffect, useState} from 'react'
 
 export default function EmployeeInformation(props)
 {
+	const globalStore = useStore();
 	return(
 		<div className="p-5 border shadow rounded h-full space-y-3 bg-white">
 			<div className="flex flex-row justify-between items-center bg-blue-300 -m-5 mb-5 p-5 rounded-t">
@@ -21,6 +25,8 @@ export default function EmployeeInformation(props)
 					<label htmlFor="firstName">First Name</label>
 					<input type="text" 
 					id="firstName" 
+					value={globalStore.currentEmployee?.firstName || ""}
+					onChange={e => globalStore.setCurrentEmployee({...globalStore.currentEmployee, firstName: e.target.value })}
 					className="p-3 font-medium rounded-md w-full border border-slate-300 placeholder:opacity-60" />
 				</div>
 			</div>
@@ -28,7 +34,9 @@ export default function EmployeeInformation(props)
 				<div>
 					<label htmlFor="middleName">Middle Name</label>
 					<input type="text" 
-					id="middleName" 
+					id="middleName"
+					value={globalStore.currentEmployee?.middleName || ""}
+					onChange={e => globalStore.setCurrentEmployee({...globalStore.currentEmployee, middleName: e.target.value })}					
 					className="p-3 font-medium rounded-md w-full border border-slate-300 placeholder:opacity-60" />
 				</div>
 			</div>
@@ -36,7 +44,9 @@ export default function EmployeeInformation(props)
 				<div>
 					<label htmlFor="lastName">Last Name</label>
 					<input type="text" 
-					id="lastName" 
+					id="lastName"
+					value={globalStore.currentEmployee?.lastName || ""}
+					onChange={e => globalStore.setCurrentEmployee({...globalStore.currentEmployee, lastName: e.target.value })}					 
 					className="p-3 font-medium rounded-md w-full border border-slate-300 placeholder:opacity-60" />
 				</div>
 			</div>
@@ -46,6 +56,8 @@ export default function EmployeeInformation(props)
 					<label htmlFor="address">Address</label>
 					<input type="text" 
 					id="address" 
+					value={globalStore.currentEmployee?.address || ""}
+					onChange={e => globalStore.setCurrentEmployee({...globalStore.currentEmployee, address: e.target.value })}
 					className="p-3 font-medium rounded-md w-full border border-slate-300 placeholder:opacity-60" />
 				</div>
 			</div>	
@@ -54,6 +66,8 @@ export default function EmployeeInformation(props)
 					<label htmlFor="address2" className="md:hidden">Address Line 2</label>
 					<input type="text" 
 					id="address2" 
+					value={globalStore.currentEmployee?.address2 || ""}
+					onChange={e => globalStore.setCurrentEmployee({...globalStore.currentEmployee, address2: e.target.value })}					
 					className="p-3 font-medium rounded-md w-full border border-slate-300 placeholder:opacity-60" />
 				</div>
 			</div>
@@ -63,6 +77,8 @@ export default function EmployeeInformation(props)
 						<label htmlFor="City">City</label>
 						<input type="text" 
 						id="City" 
+						value={globalStore.currentEmployee?.city || ""}
+						onChange={e => globalStore.setCurrentEmployee({...globalStore.currentEmployee, city: e.target.value })}						
 						className="p-3 font-medium rounded-md w-full border border-slate-300 placeholder:opacity-60" />
 					</div>
 				</div>
@@ -71,6 +87,8 @@ export default function EmployeeInformation(props)
 						<label htmlFor="state">State</label>
 						<input type="text" 
 						id="state" 
+						value={globalStore.currentEmployee?.state || ""}
+						onChange={e => globalStore.setCurrentEmployee({...globalStore.currentEmployee, state: e.target.value })}						
 						className="p-3 font-medium rounded-md w-full border border-slate-300 placeholder:opacity-60" />
 					</div>
 				</div>																		
@@ -79,16 +97,20 @@ export default function EmployeeInformation(props)
 						<label htmlFor="zip">Zip Code</label>
 						<input type="text" 
 						id="zip" 
+						value={globalStore.currentEmployee?.postalCode || ""}
+						onChange={e => globalStore.setCurrentEmployee({...globalStore.currentEmployee, postalCode: e.target.value })}						
 						className="p-3 font-medium rounded-md w-full border border-slate-300 placeholder:opacity-60" />
 					</div>
 				</div>
 			</div>
-			<div class="flex flex-row justify-items items-center gap-4">
+			<div className="flex flex-row justify-items items-center gap-4">
 				<div className="flex flex-col justifyt-between md:space-y-3 w-full">
 					<div>
 						<label htmlFor="phone">Phone</label>
 						<input type="text" 
-						id="phone" 
+						id="phone"
+						value={globalStore.currentEmployee?.phone || ""}
+						onChange={e => globalStore.setCurrentEmployee({...globalStore.currentEmployee, phone: e.target.value })}						
 						className="p-3 font-medium rounded-md w-full border border-slate-300 placeholder:opacity-60" />
 					</div>
 				</div>
@@ -97,11 +119,13 @@ export default function EmployeeInformation(props)
 						<label htmlFor="email">Email Address</label>
 						<input type="text" 
 						id="email" 
+						value={globalStore.currentEmployee?.email || ""}
+						onChange={e => globalStore.setCurrentEmployee({...globalStore.currentEmployee, email: e.target.value })}
 						className="p-3 font-medium rounded-md w-full border border-slate-300 placeholder:opacity-60" />
 					</div>
 				</div>
 			</div>
-			<div class="flex flex-row justify-items items-center gap-4">
+			<div className="flex flex-row justify-items items-center gap-4">
 				{!props.isNewEmployee && (
 					<div className="flex flex-col justifyt-between md:space-y-3 w-full">
 						<div>
@@ -114,6 +138,8 @@ export default function EmployeeInformation(props)
 						<label htmlFor="employeeNumber">Employee Number</label>
 						<input type="text" 
 						id="employeeNumber" 
+						value={globalStore.currentEmployee?.employeeNumber || ""}
+						onChange={e => globalStore.setCurrentEmployee({...globalStore.currentEmployee, employeeNumber: e.target.value })}
 						className="p-3 font-medium rounded-md w-full border border-slate-300 placeholder:opacity-60" />
 					</div>
 				</div>
