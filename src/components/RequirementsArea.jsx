@@ -13,7 +13,6 @@ export default function RequirementsArea(props)
 	const allCategories = useGetRPCActionCategories();
 	const allActions = useGetRPCActions();
 
-	const [categoryId, setCategoryId] = useState('');
 
 	useEffect(() => {
 		if(allActions.isSuccess)
@@ -35,8 +34,10 @@ export default function RequirementsArea(props)
 
 					<select 
 					id="rpcCategory"
-					value={categoryId || ""}
-					onChange={e => setCategoryId(e.target.value)}
+					value={globalStore.RPCActionCategory?.rpcActionCategoryId || ""}
+					onChange={e => {
+						globalStore.setRPCActionCategory(allCategories?.data?.find(x => x.rpcActionCategoryId == e.target.value));
+					}}
 					className="p-3 font-medium rounded-md w-full border border-slate-300 placeholder:opacity-60">
 						<option className="p-3 text-l" value="-1" key="-1">{(allCategories.status == "loading") ? "Loading..." : "Select a Category"}</option>
 						{!!allCategories.data && allCategories?.data?.map(data => (
@@ -51,13 +52,16 @@ export default function RequirementsArea(props)
 					<label htmlFor="rpcAction">Select an Action</label>
 					<select 
 					id="rpcAction" 
-					disabled={!globalStore.allActions || !categoryId || categoryId == '-1'}
+					disabled={!globalStore.allActions || !globalStore.RPCActionCategory?.rpcActionCategoryId || globalStore.RPCActionCategory?.rpcActionCategoryId == '-1'}
+					onChange={e => {
+						globalStore.setRPCAction(globalStore?.allActions?.find(x => x.rpcActionId == e.target.value));
+					}}
 					className="p-3 font-medium rounded-md w-full border border-slate-300 placeholder:opacity-60">
 						{(allActions.status == "loading") && (<option className="p-3 text-l" value="-1" key="-1">Loading...</option>)}
-						{(!!globalStore.allActions && !!categoryId) ? (
+						{(!!globalStore.allActions && !!globalStore.RPCActionCategory) ? (
 						<>
 						<option className="p-3 text-l" value="-1" key="-1">Select an action</option>
-						{!!globalStore.allActions && globalStore?.allActions?.filter(x => x.rpcActionCategoryId == categoryId)?.map(data => (
+						{!!globalStore.allActions && globalStore?.allActions?.filter(x => x.rpcActionCategoryId == globalStore?.RPCActionCategory?.rpcActionCategoryId)?.map(data => (
 							<option value={data.rpcActionId} key={data.rpcActionId}>{data.title}</option>
 						))}
 						</>
