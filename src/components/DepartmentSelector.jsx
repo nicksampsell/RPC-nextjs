@@ -56,6 +56,7 @@ export default function DepartmentSelector(props)
 					<select 
 					id="organizationField" 
 					className="p-3 font-medium rounded-md w-full border border-slate-300 placeholder:opacity-60"
+					value={globalStore?.organizationId || ""}
 					onChange={e => changeOrganization(e.target.value)} value={globalStore.currentOrganization == null ? -1 : globalStore.currentOrganization?.organizationId}>
 						<option className="p-3 text-l" value="-1" key="-1">{(orgInfo.status == "loading") ? "Loading..." : "Select an Organization"}</option>
 						{!!globalStore.allOrganizations && globalStore.allOrganizations?.map(data => (
@@ -69,7 +70,7 @@ export default function DepartmentSelector(props)
 					disabled={(!globalStore.allDepartments || globalStore.allDepartments.length <= 0) && true }
 					id="departmentField" className="p-3 font-medium rounded-md w-full border border-slate-300 placeholder:opacity-60 disabled:bg-gray-200"
 					onChange={e => changeDepartment(e.target.value)} 
-					value={typeof globalStore.currentDepartment == null ? -1 : globalStore.currentDepartment?.departmentId}>
+					value={globalStore?.currentDepartment?.departmentId || ""}>
 						<option className="p-3 text-l" value="-1" key="-1">{(allDepartments.status == "loading") ? "Loading..." : "Select a Department"}</option>
 						{!!globalStore.allDepartments && globalStore.allDepartments?.map(data => (
 							<option value={data.departmentId} key={data.departmentId}>{data.title}</option>
@@ -82,8 +83,8 @@ export default function DepartmentSelector(props)
 					id="accountNoField" 
 					type="text" 
 					className="p-3 font-medium rounded-md w-full border border-slate-300 placeholder:opacity-60"
-					readOnly={true}
-					value={globalStore?.currentDepartment?.accountNumber}
+					readOnly
+					defaultValue={globalStore?.currentDepartment?.accountNumber}
 					/>
 				</div>					
 			</div>

@@ -32,12 +32,16 @@ export default function PositionInformation(props)
 					<label htmlFor="positionId">Position</label>
 					<select
 					id="positionId" 
-					value={globalStore.currentPosition?.id || ""}
-					onChange={e => globalStore.setCurrentPosition(globalStore.allPositions?.find(x => x.id == e.target.value))}
+					value={globalStore.currentPosition?.positionId || ""}
+					onChange={e => {
+						globalStore.setCurrentPosition(globalStore.allPositions?.find(x => x.positionId == e.target.value))
+						globalStore.setCurrentPositionSchedule(globalStore.allPositions?.find(x => x.positionId == e.target.value)?.schedule[0])
+					}}
 					className="p-3 font-medium rounded-md w-full border border-slate-300 placeholder:opacity-60">
 						{!!globalStore.allPositions && globalStore.allPositions.map(item => (
 							<option value={item.positionId} key={item.positionId}>{item.positionTitle}</option>
 						))}
+
 					</select>
 				</div>
 			</div>
@@ -47,7 +51,9 @@ export default function PositionInformation(props)
 						<label htmlFor="union">Union</label>
 						<input type="text" 
 						id="union"
-						className="p-3 font-medium rounded-md w-full border border-slate-300 placeholder:opacity-60" />
+						className="p-3 font-medium rounded-md w-full border border-slate-300 placeholder:opacity-60"
+						readOnly
+						value={globalStore?.currentPositionSchedule?.unionTitle || ""} />
 					</div>
 				</div>
 
@@ -56,9 +62,15 @@ export default function PositionInformation(props)
 				<div className="flex flex-col justify-between md:space-y-3 w-full">
 					<div>
 						<label htmlFor="schedule">Schedule</label>
-						<input type="text" 
+						<select
+						value={globalStore?.currentPositionSchedule?.payScheduleId || "EntryWage"}
+						onChange={e => globalStore.setCurrentPositionSchedule(globalStore?.currentPosition.schedule.find(x => x.positionId == e.target.value))}
 						id="schedule" 
-						className="p-3 font-medium rounded-md w-full border border-slate-300 placeholder:opacity-60" />
+						className="p-3 font-medium rounded-md w-full border border-slate-300 placeholder:opacity-60">
+							{!!globalStore.currentPosition && globalStore?.currentPosition.schedule?.map(item => (
+								<option value={item.payScheduleId} key={item.payScheduleId}>{item.title}</option>
+							))}
+						</select>
 					</div>
 				</div>
 				<div className="flex flex-col justify-between md:space-y-3 w-full">
@@ -66,15 +78,28 @@ export default function PositionInformation(props)
 						<label htmlFor="grade">Grade</label>
 						<input type="text" 
 						id="grade" 
-						className="p-3 font-medium rounded-md w-full border border-slate-300 placeholder:opacity-60" />
+						className="p-3 font-medium rounded-md w-full border border-slate-300 placeholder:opacity-60"
+						readOnly
+						value={globalStore?.currentPositionSchedule?.grade || ""} />
 					</div>
 				</div>
 				<div className="flex flex-col justify-between md:space-y-3 w-full">
 					<div>
 						<label htmlFor="step">Step</label>
-						<input type="text" 
+						<select
 						id="step" 
-						className="p-3 font-medium rounded-md w-full border border-slate-300 placeholder:opacity-60" />
+						className="p-3 font-medium rounded-md w-full border border-slate-300 placeholder:opacity-60"
+						value={globalStore?.step || ""}
+						onChange={e => {
+							globalStore.setStep(e.target.value)
+							globalStore.setWage(globalStore.currentPosition?.payScales?.[0]?.wages?.find(x => x.stepTitle == e.target.value)?.wage)
+						}}
+						>
+							{!!globalStore.currentPosition?.payScales?.[0]?.wages && globalStore.currentPosition?.payScales?.[0]?.wages?.map(item => (
+								<option value={item.stepTitle} key={item.stepTitle}>{item.niceName}</option>
+							))}
+							<option value="manual" key="fixed">Fixed Rate</option>
+						</select>
 					</div>
 				</div>
 			</div>
@@ -87,7 +112,11 @@ export default function PositionInformation(props)
 						ref={wageRef} 
 						type="text" 
 						id="wage" 
-						className="p-3 font-medium rounded-md w-full border rounded-l-none border-slate-300 border-l-0 placeholder:opacity-60" />
+						className="p-3 font-medium rounded-md w-full border rounded-l-none border-slate-300 border-l-0 placeholder:opacity-60" 
+						readOnly={(globalStore?.step == "manual" ? false : true)}
+						onChange={e => globalStore.setWage(e.target.value)}
+						onKeyDown={e => globalStore.step != 'manual' && globalStore.setStep('manual')}
+						value={globalStore.wage ?? ""} />
 					</div>
 				</div>
 			</div>

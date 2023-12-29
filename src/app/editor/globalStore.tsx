@@ -12,6 +12,7 @@ type Store = {
     allDepartments: Array<KeyValuePair> | null,
     currentOrganization: KeyValuePair | null,
     currentDepartment: KeyValuePair | null,
+    currentPositionSchedule: KeyValuePair | null,
     allPositions: Array<KeyValuePair> | null,
     allEmployees: Array<KeyValuePair> | null,
     currentPosition: KeyValuePair | null,
@@ -24,7 +25,9 @@ type Store = {
     RPCData: Array<KeyValuePair> | null,
     RPCDataFields: Array<KeyValuePair> | null,
     RPCFormId: string | number | null,
-    RPCId: number | string | null
+    RPCId: number | string | null,
+    step: string | null,
+    wage: number | null,
 };
 
 type Action = {
@@ -33,10 +36,13 @@ type Action = {
     setAllPositions: (positions: Array<KeyValuePair> | null) => void,
     setAllEmployees: (employees: Array<KeyValuePair> | null) => void,
     setCurrentOrganization: (organization: KeyValuePair | null) => void,
+    setCurrentPositionSchedule: (schedule: KeyValuePair | null) => void,
     setCurrentDepartment: (department: KeyValuePair | null) => void,
     setCurrentEmployee: (employee: KeyValuePair | null) => void,
     setCurrentPosition: (position: KeyValuePair | null) => void,
     setBulkEmployees: (employees: Array<KeyValuePair> | null) => void,
+    setStep: (step: string) => void,
+    setWage: (wage : number) => void,
     setRPCActionCategory: (category: string | number | null) => void,
     setRPCAction: (action: string | number | null) => void,
     setRPCData: (fieldId: string | number, value: string | number) => void,
@@ -56,6 +62,7 @@ export const useStore = create<Store & Action>(
         allDepartments: null,
         currentOrganization: null,
         currentDepartment: null,
+        currentPositionSchedule: null,
         allPositions: null,
         allEmployees: null,
         currentPosition: null,
@@ -69,6 +76,8 @@ export const useStore = create<Store & Action>(
         RPCDataFields: null,
         RPCFormId: null,
         RPCId: null,
+        step: null,
+        wage: null,
 
         setAllOrganizations: (organizations) => set((state) => {
             state.allOrganizations = organizations;
@@ -84,6 +93,9 @@ export const useStore = create<Store & Action>(
         }),
         setCurrentOrganization: (organization) => set((state) => {
             state.currentOrganization = organization;
+        }),
+        setCurrentPositionSchedule: (schedule) => set((state) => {
+            state.currentPositionSchedule = schedule;
         }),
         setCurrentDepartment: (department) => set((state) => {
             state.currentDepartment = department;
@@ -117,6 +129,15 @@ export const useStore = create<Store & Action>(
         setRPCDataFields: (fields) => set((state) => {
             state.RPCDataFields = fields;
         }),
+
+        setStep: (step) => set((state) => {
+            state.step = step;
+        }),
+
+        setWage: (wage) => set((state) => {
+            state.wage = wage;
+        }),
+
         updateSingleField: (objectId, keyName, value) => set((state) => {
             if (state[objectId]?.hasOwnProperty(keyName)) {
                 state[objectId][keyName] = value;
@@ -138,6 +159,7 @@ export const useStore = create<Store & Action>(
             state.allDepartments = null;
             state.currentOrganization = null;
             state.currentDepartment = null;
+            state.currentPositionSchedule = null;
             state.allPositions = null;
             state.allEmployees = null;
             state.currentPosition = null;
@@ -151,6 +173,8 @@ export const useStore = create<Store & Action>(
             state.RPCDataFields = null;
             state.RPCFormId = null;
             state.RPCId = null;
+            state.step = null;
+            state.wage = null;
         })
     }))
 );
