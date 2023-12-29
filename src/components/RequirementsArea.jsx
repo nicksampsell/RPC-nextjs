@@ -2,7 +2,7 @@
 import { useState, useEffect } from 'react';
 import {useStore} from '@/app/editor/globalStore'
 import { MdOutlineChevronRight } from 'react-icons/md'
-import { useGetRPCActionCategories, useGetRPCActions } from '@/queries/fetch.hooks';
+import { useGetRPCActionCategories, useGetRPCActions, useGetRPCActionFields } from '@/queries/fetch.hooks';
 
 export default function RequirementsArea(props)
 {
@@ -12,14 +12,21 @@ export default function RequirementsArea(props)
 
 	const allCategories = useGetRPCActionCategories();
 	const allActions = useGetRPCActions();
+	const allFields = useGetRPCActionFields(globalStore?.RPCAction?.rpcActionId);
 
+	useEffect(() => {
+		if(allFields.isSuccess)
+		{
+			globalStore.setRPCDataFields(allFields.data);
+		}
+	}, [allFields]);
 
 	useEffect(() => {
 		if(allActions.isSuccess)
 		{
 			globalStore.setAllActions(allActions.data)
 		}
-	}, [allActions])
+	}, [allActions]);
 
 	return(
 		<div className="p-5 border shadow rounded h-full bg-white">
@@ -70,6 +77,14 @@ export default function RequirementsArea(props)
 						)}
 					</select>
 				</div>
+			</div>
+			<div className="flex flex-col justify-start space-x-3 w-full">
+				{!!globalStore.RPCDataFields && globalStore.RPCDataFields.map(x => (
+					<div>
+						<label>{x.title}</label>
+					</div>
+				))}
+
 			</div>
 		</div>
 	);

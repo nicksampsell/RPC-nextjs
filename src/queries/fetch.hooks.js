@@ -73,6 +73,22 @@ useQuery({
 	}
 })
 
+export const useGetRPCActionFields = (actionId) =>
+	useQuery({
+	queryKey:['getRPCFields',actionId],
+	queryFn: async () => {
+		const { data } = await axios.get('/api/rpcaction/' + actionId + '/fields',
+		{
+			withCredentials: true,
+			headers: {
+				
+			}
+		})
+		return data
+	},
+	enabled: !!actionId
+})
+
 export const useGetPreviousEmployee = (inputtedValue) => {
 let positionId;
 
