@@ -1,6 +1,27 @@
+'use client'
+import { useState, useEffect } from 'react';
+import {useStore} from '@/app/editor/globalStore'
 import { MdOutlineChevronRight } from 'react-icons/md'
+import { useGetRPCActionCategories, useGetRPCActions } from '@/queries/fetch.hooks';
+
 export default function RequirementsArea(props)
 {
+
+
+	const globalStore = useStore();
+
+	const allCategories = useGetRPCActionCategories();
+	const allActions = useGetRPCActions();
+
+	const [categoryId, setCategoryId] = useState('');
+
+	useEffect(() => {
+		if(allActions.isSuccess)
+		{
+			globalStore.setAllActions(allActions.data)
+		}
+	}, [allActions])
+
 	return(
 		<div className="p-5 border shadow rounded h-full bg-white">
 			<div className="flex flex-row justify-between items-center bg-blue-300 -m-5 mb-5 p-5 rounded-t">
@@ -10,17 +31,39 @@ export default function RequirementsArea(props)
 			<div className="flex flex-col md:flex-row justify-start space-x-3 items-center md:space-y-3 w-full">
 				<div className="w-full md:w-1/3 gap-5">
 					<label htmlFor="rpcCategory" className="inline-block mb-2">Select a Type of Change</label>
+
+
 					<select 
-					id="rpcCategory" 
+					id="rpcCategory"
+					value={categoryId || ""}
+					onChange={e => setCategoryId(e.target.value)}
 					className="p-3 font-medium rounded-md w-full border border-slate-300 placeholder:opacity-60">
-						<option className="p-3 text-l">Category</option>
+						<option className="p-3 text-l" value="-1" key="-1">{(allCategories.status == "loading") ? "Loading..." : "Select a Category"}</option>
+						{!!allCategories.data && allCategories?.data?.map(data => (
+							<option value={data.rpcActionCategoryId} key={data.rpcActionCategoryId}>{data.title}</option>
+						))}
 					</select>
 				</div>
 				<MdOutlineChevronRight className="text-4xl" />
 				<div className="w-full md:w-1/3">
+
+
 					<label htmlFor="rpcAction">Select an Action</label>
-					<select id="rpcAction" className="p-3 font-medium rounded-md w-full border border-slate-300 placeholder:opacity-60">
-						<option>Action</option>
+					<select 
+					id="rpcAction" 
+					disabled={!globalStore.allActions || !categoryId || categoryId == '-1'}
+					className="p-3 font-medium rounded-md w-full border border-slate-300 placeholder:opacity-60">
+						{(allActions.status == "loading") && (<option className="p-3 text-l" value="-1" key="-1">Loading...</option>)}
+						{(!!globalStore.allActions && !!categoryId) ? (
+						<>
+						<option className="p-3 text-l" value="-1" key="-1">Select an action</option>
+						{!!globalStore.allActions && globalStore?.allActions?.filter(x => x.rpcActionCategoryId == categoryId)?.map(data => (
+							<option value={data.rpcActionId} key={data.rpcActionId}>{data.title}</option>
+						))}
+						</>
+						) : (
+							<option value="-1"></option>
+						)}
 					</select>
 				</div>
 			</div>

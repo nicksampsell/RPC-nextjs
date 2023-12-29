@@ -15,6 +15,7 @@ type Store = {
     currentPositionSchedule: KeyValuePair | null,
     allPositions: Array<KeyValuePair> | null,
     allEmployees: Array<KeyValuePair> | null,
+    allActions: Array<KeyValuePair> | null,
     currentPosition: KeyValuePair | null,
     oldPosition: KeyValuePair | null,
     currentEmployee: KeyValuePair | null,
@@ -35,6 +36,7 @@ type Action = {
     setAllDepartments: (departments: Array<KeyValuePair> | null) => void,
     setAllPositions: (positions: Array<KeyValuePair> | null) => void,
     setAllEmployees: (employees: Array<KeyValuePair> | null) => void,
+    setAllActions: (actions: any) => void,
     setCurrentOrganization: (organization: KeyValuePair | null) => void,
     setCurrentPositionSchedule: (schedule: KeyValuePair | null) => void,
     setCurrentDepartment: (department: KeyValuePair | null) => void,
@@ -65,6 +67,7 @@ export const useStore = create<Store & Action>(
         currentPositionSchedule: null,
         allPositions: null,
         allEmployees: null,
+        allActions: null,
         currentPosition: null,
         oldPosition: null,
         currentEmployee: null,
@@ -130,6 +133,10 @@ export const useStore = create<Store & Action>(
             state.RPCDataFields = fields;
         }),
 
+        setAllActions: (fields) => set((state) => {
+            state.allActions = fields;
+        }),
+
         setStep: (step) => set((state) => {
             state.step = step;
         }),
@@ -162,6 +169,7 @@ export const useStore = create<Store & Action>(
             state.currentPositionSchedule = null;
             state.allPositions = null;
             state.allEmployees = null;
+            state.allActions = null;
             state.currentPosition = null;
             state.oldPosition = null;
             state.currentEmployee = null;

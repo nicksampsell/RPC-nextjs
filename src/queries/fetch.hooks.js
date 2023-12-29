@@ -44,10 +44,10 @@ export const useGetDepartments = (organizationId) =>
 })
 
 export const useGetRPCActions = () =>
-useQuery(
-	['getAllRPCCategories'],
-	async () => {
-		const { data } = await axios.get('/Api/RPCAPI/GetRPCActions',
+useQuery({
+	queryKey:['getAllRPCActions'],
+	queryFn: async () => {
+		const { data } = await axios.get('/api/rpcaction',
 		{
 			withCredentials: true,
 			headers: {
@@ -56,7 +56,22 @@ useQuery(
 		})
 		return data
 	}
-)
+})
+
+export const useGetRPCActionCategories = () =>
+useQuery({
+	queryKey:['getAllRPCCategories'],
+	queryFn: async () => {
+		const { data } = await axios.get('/api/rpcaction/getcategories',
+		{
+			withCredentials: true,
+			headers: {
+				'X-Requested-With': 'XMLHttpRequest'
+			}
+		})
+		return data
+	}
+})
 
 export const useGetPreviousEmployee = (inputtedValue) => {
 let positionId;
