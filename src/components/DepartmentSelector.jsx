@@ -39,7 +39,6 @@ export default function DepartmentSelector(props)
 		globalStore.setCurrentPosition(null);
 	}
 
-	console.log(globalStore);
 
 
 	return(

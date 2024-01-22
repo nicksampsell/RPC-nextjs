@@ -81,13 +81,35 @@ export const useGetRPCActionFields = (actionId) =>
 		{
 			withCredentials: true,
 			headers: {
-				
+				'X-Requested-With': 'XMLHttpRequest'
 			}
 		})
 		return data
 	},
 	enabled: !!actionId
 })
+
+
+export const useGetEmployeeBySSN = (ssn) =>
+	useQuery({
+	queryKey:['getEmployeeBySSN',ssn],
+	queryFn: async () => {
+		const { data } = await axios({
+			method: 'post',
+			url: '/api/Employee/findBySSN',
+			withCredentials: true,
+			data: {
+				ssn: ssn.replace("-","")
+			},
+			headers: {
+				'X-Requested-With': 'XMLHttpRequest'
+			}
+		})
+		return data
+	},
+	enabled: !!ssn && ssn.length >= 9
+})
+
 
 export const useGetPreviousEmployee = (inputtedValue) => {
 let positionId;
@@ -104,6 +126,11 @@ else
 {
 	positionId = inputtedValue
 }
+
+
+
+
+
 
 return useQuery({
 	queryKey: ['getFormerEmployee', inputtedValue],

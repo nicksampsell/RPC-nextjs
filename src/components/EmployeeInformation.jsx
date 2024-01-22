@@ -2,10 +2,35 @@
 import {SSNFieldNewEmployee, SSNField} from './SSNField'
 import {useStore} from '@/app/editor/globalStore'
 import {useEffect, useState} from 'react'
+import { useGetEmployeeBySSN } from '../queries/fetch.hooks'
+import { PatternFormat } from 'react-number-format';
 
 export default function EmployeeInformation(props)
 {
 	const globalStore = useStore();
+
+	const searchEmployee = useGetEmployeeBySSN(globalStore?.currentEmployee?.ssn);
+
+	useEffect(() => {
+
+		const { data: employee} = searchEmployee;
+
+		globalStore.setCurrentEmployee({...globalStore.currentEmployee, 
+			firstName: employee?.firstName,
+			middleName: employee?.middleName,
+			lastName: employee?.lastName,
+			address: employee?.currentAddress?.address,
+			address2: employee?.currentAddress?.address2,
+			city: employee?.currentAddress?.city,
+			state: employee?.currentAddress?.state,
+			zipCode: employee?.currentAddress?.zipCode,
+			phone: employee?.phone,
+			email: employee?.personalEmail,
+			employeeNumber: employee?.employeeNumber
+		});
+
+	}, [searchEmployee.data, searchEmployee.isSuccess])
+
 	return(
 		<div className="p-5 border shadow rounded h-full space-y-3 bg-white">
 			<div className="flex flex-row justify-between items-center bg-blue-300 -m-5 mb-5 p-5 rounded-t">
@@ -16,7 +41,11 @@ export default function EmployeeInformation(props)
 
 			{!!props.isNewEmployee && (
 			<div className="flex flex-col justifyt-between md:space-y-3 w-full">
-				<SSNFieldNewEmployee obscure={true} />
+				<SSNFieldNewEmployee 
+				obscure={true} 
+				value={globalStore.currentEmployee?.ssn || ''}
+				onChange={e => globalStore.setCurrentEmployee({...globalStore.currentEmployee, ssn: e.target.value})}
+				/>
 			</div>
 			)}
 			<div className="flex flex-row gap-3">
@@ -107,8 +136,10 @@ export default function EmployeeInformation(props)
 				<div className="flex flex-col justifyt-between md:space-y-3 w-full">
 					<div>
 						<label htmlFor="phone">Phone</label>
-						<input type="text" 
+						<PatternFormat
+						type="text" 
 						id="phone"
+						format="(###) ###-#### #####"
 						value={globalStore.currentEmployee?.phone || ""}
 						onChange={e => globalStore.setCurrentEmployee({...globalStore.currentEmployee, phone: e.target.value })}						
 						className="p-3 font-medium rounded-md w-full border border-slate-300 placeholder:opacity-60" />

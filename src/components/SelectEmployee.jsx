@@ -3,6 +3,7 @@ import {useStore} from '@/app/editor/globalStore'
 import { useGetEmployeesAndPositions } from '@/queries/fetch.hooks'
 import {useEffect, useState} from 'react'
 
+
 export default function SelectEmployee(props)
 {
 	const globalStore = useStore();
@@ -10,7 +11,6 @@ export default function SelectEmployee(props)
 		'includeAllEmployees': false,
 		'includeFormerEmployees': false
 	});
-
 
 	const { status, data: employeesAndPositions, error, isFetching, isLoading } = 
 		useGetEmployeesAndPositions(
