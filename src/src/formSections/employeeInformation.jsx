@@ -4,7 +4,7 @@ import InputField from '../fieldTypes/inputField'
 import { useFormContext } from 'react-hook-form'
 import { states } from '../helpers/States'
 import { EditButton } from '../components/EditButton'
-import { useLoadEmployeeBySSN } from '../queries/autofill.hooks'
+import { useLoadEmployeeBySSN } from '../queries/employee.hooks'
 import debounce from 'lodash.debounce'
 
 export default function EmployeeInformation(props) {

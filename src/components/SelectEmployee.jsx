@@ -1,6 +1,7 @@
 'use client'
 import {useStore} from '@/app/editor/globalStore'
 import { useGetEmployeesAndPositions } from '@/queries/fetch.hooks'
+import { useGetEmployeesByDepartment } from '@/queries/employee.hooks'
 import {useEffect, useState} from 'react'
 
 
@@ -12,21 +13,28 @@ export default function SelectEmployee(props)
 		'includeFormerEmployees': false
 	});
 
-	const { status, data: employeesAndPositions, error, isFetching, isLoading } = 
-		useGetEmployeesAndPositions(
-			globalStore.currentDepartment?.id, 
-			searchOptions.includeAllEmployees,
-			searchOptions.includeFormerEmployees
-		);
+	const getAllEmployees = useGetEmployeesByDepartment(
+		globalStore.currentOrganization?.organizationId, 
+		globalStore.currentDepartment?.departmentId,
+		!!searchOptions.includeAllEmployees,
+		!!searchOptions.includeFormerEmployees)
 
 	useEffect(() => {
-		globalStore.setAllEmployees(employeesAndPositions?.employees)
-		globalStore.setAllPositions(employeesAndPositions?.positions)
-	}, [employeesAndPositions]);
+		globalStore.setAllEmployees(getAllEmployees.data)
+	}, [getAllEmployees.data, getAllEmployees.isSuccess])
+
+
+	console.log()
 
 	const changeEmployee = (employeeId) => {
-		globalStore.setCurrentEmployee(globalStore.allEmployees.find(x => x.id == employeeId));
-		globalStore.setCurrentPosition(globalStore.allPositions.find(x => x.id == globalStore.allEmployees.find(x => x.id == employeeId).positions[0].position.id))
+		globalStore.setCurrentEmployee(
+			globalStore.allEmployees.find(x => x.employeeId == employeeId)
+		);
+
+		globalStore.setCurrentPosition(
+			globalStore.allPositions.find(x => x.positionId == globalStore.allEmployees.find(x => x.employeeId == employeeId)?.positions[0]?.positionId)
+		)
+
 	}
 
 
@@ -43,9 +51,9 @@ export default function SelectEmployee(props)
 					id="selectEmployee" 
 					className="p-3 font-medium rounded-md w-full border border-slate-300 placeholder:opacity-60"
 					onChange={e => changeEmployee(e.target.value)} value={globalStore.currentEmployee == null ? -1 : globalStore.currentEmployee?.id}>
-						<option className="p-3 text-l" value="-1">{(status == "loading") ? "Loading..." : "Select an Employee"}</option>
+						<option className="p-3 text-l" value="-1">{(getAllEmployees.status == "loading") ? "Loading..." : "Select an Employee"}</option>
 						{!!globalStore.allEmployees && globalStore.allEmployees?.map(data => (
-							<option value={data.id} key={data.id}>{data.firstName} {data.lastName}</option>
+							<option value={data.employeeId} key={data.employeeId}>{data.firstName} {data.lastName}</option>
 						))}
 					</select>					
 				</div>

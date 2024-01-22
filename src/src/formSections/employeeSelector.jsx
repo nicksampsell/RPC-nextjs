@@ -5,7 +5,7 @@ import InputField from '../fieldTypes/inputField'
 import { RPCDataSetContext } from '../RPCDataSetContext'
 import { EditButton } from '../components/EditButton'
 import { useImmer } from 'use-immer';
-import { useGetEmployeesAndPositions } from '../queries/autofill.hooks'
+import { useGetEmployeesAndPositions } from '../queries/employee.hooks'
 
 export default function EmployeeSelector(props) {
 
