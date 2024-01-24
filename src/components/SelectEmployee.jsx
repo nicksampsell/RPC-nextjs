@@ -3,6 +3,7 @@ import {useStore} from '@/app/editor/globalStore'
 import { useGetEmployeesAndPositions } from '@/queries/fetch.hooks'
 import { useGetEmployeesByDepartment } from '@/queries/employee.hooks'
 import {useEffect, useState} from 'react'
+import { useStepConversion } from '../hooks/employee.hooks'
 
 
 export default function SelectEmployee(props)
@@ -24,16 +25,22 @@ export default function SelectEmployee(props)
 	}, [getAllEmployees.data, getAllEmployees.isSuccess])
 
 
-	console.log()
+	//console.log(globalStore)
 
 	const changeEmployee = (employeeId) => {
+
+		const currentStep = useStepConversion(globalStore.allEmployees.find(x => x.employeeId == employeeId)?.employeePositions?.filter(x => x.status == 1)?.[0]?.step)
+		const currentPosition = globalStore.allPositions.find(x => x.positionId == globalStore.allEmployees.find(x => x.employeeId == employeeId)?.positions[0]?.positionId)
+
 		globalStore.setCurrentEmployee(
 			globalStore.allEmployees.find(x => x.employeeId == employeeId)
 		);
 
-		globalStore.setCurrentPosition(
-			globalStore.allPositions.find(x => x.positionId == globalStore.allEmployees.find(x => x.employeeId == employeeId)?.positions[0]?.positionId)
-		)
+		globalStore.setCurrentPosition(currentPosition)
+		globalStore.setCurrentPositionSchedule(currentPosition?.schedule[0])
+
+		globalStore.setStep(currentStep)
+		globalStore.setWage(currentPosition?.payScales?.[0]?.wages?.find(x => x.stepTitle == currentStep)?.wage)
 
 	}
 

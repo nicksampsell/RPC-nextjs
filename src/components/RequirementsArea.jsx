@@ -3,6 +3,7 @@ import { useState, useEffect } from 'react';
 import {useStore} from '@/app/editor/globalStore'
 import { MdOutlineChevronRight } from 'react-icons/md'
 import { useGetRPCActionCategories, useGetRPCActions, useGetRPCActionFields } from '@/queries/fetch.hooks';
+import FieldContainer  from './fields/FieldContainer'
 
 export default function RequirementsArea(props)
 {
@@ -27,6 +28,8 @@ export default function RequirementsArea(props)
 			globalStore.setAllActions(allActions.data)
 		}
 	}, [allActions]);
+
+	console.log(globalStore.RPCDataFields)
 
 	return(
 		<div className="p-5 border shadow rounded h-full bg-white">
@@ -80,8 +83,8 @@ export default function RequirementsArea(props)
 			</div>
 			<div className="flex flex-col justify-start space-x-3 w-full">
 				{!!globalStore.RPCDataFields && globalStore.RPCDataFields.map(x => (
-					<div>
-						<label>{x.title}</label>
+					<div key={x.rpcActionFieldId}>
+						<FieldContainer label={x.title} name={x.title} type={x.fieldType}/>
 					</div>
 				))}
 
