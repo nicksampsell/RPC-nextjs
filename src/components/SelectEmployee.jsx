@@ -29,19 +29,13 @@ export default function SelectEmployee(props)
 
 	const changeEmployee = (employeeId) => {
 
-		const currentStep = useStepConversion(globalStore.allEmployees.find(x => x.employeeId == employeeId)?.employeePositions?.filter(x => x.status == 1)?.[0]?.step)
-		const currentPosition = globalStore.allPositions.find(x => x.positionId == globalStore.allEmployees.find(x => x.employeeId == employeeId)?.positions[0]?.positionId)
-
 		globalStore.setCurrentEmployee(
 			globalStore.allEmployees.find(x => x.employeeId == employeeId)
 		);
 
-		globalStore.setCurrentPosition(currentPosition)
-		globalStore.setCurrentPositionSchedule(currentPosition?.schedule[0])
-
-		globalStore.setStep(currentStep)
-		globalStore.setWage(currentPosition?.payScales?.[0]?.wages?.find(x => x.stepTitle == currentStep)?.wage)
-
+		globalStore.setCurrentPosition(
+			globalStore.allPositions.find(x => x.positionId == globalStore.allEmployees.find(x => x.employeeId == employeeId)?.positions[0]?.positionId)
+		)
 	}
 
 

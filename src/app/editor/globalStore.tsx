@@ -3,8 +3,14 @@ import { create } from 'zustand'
 import { immer } from 'zustand/middleware/immer'
 
 type KeyValuePair = {
-    Key: number | string;
+    Key: number | string,
     Value: number | string | KeyValuePair | Array<any>
+};
+
+type RPCDataItem = {
+    FieldId: number,
+    Title: string,
+    Value: number | string | Array<string|number>
 };
 
 type Store = {
@@ -23,7 +29,7 @@ type Store = {
     bulkEmployees: Array<KeyValuePair> | null,
     RPCActionCategory: number | string | null,
     RPCAction: number | string | null,
-    RPCData: Array<KeyValuePair> | null,
+    RPCData: Array<RPCDataItem> | null,
     RPCDataFields: Array<KeyValuePair> | null,
     RPCFormId: string | number | null,
     RPCId: number | string | null,
@@ -47,7 +53,7 @@ type Action = {
     setWage: (wage : number) => void,
     setRPCActionCategory: (category: string | number | null) => void,
     setRPCAction: (action: string | number | null) => void,
-    setRPCData: (fieldId: string | number, value: string | number) => void,
+    setRPCData: (fieldId: number, title: string, value: string | number) => void,
     setRPCFormId: (formId: string | number | null) => void,
     setRPCId: (rpcId: string | number | null) => void,
     setRPCDataFields: (fields: Array<KeyValuePair> | null) => void,
@@ -75,7 +81,7 @@ export const useStore = create<Store & Action>(
         bulkEmployees: null,
         RPCActionCategory: null,
         RPCAction: null,
-        RPCData: null,
+        RPCData: [],
         RPCDataFields: null,
         RPCFormId: null,
         RPCId: null,
@@ -120,8 +126,23 @@ export const useStore = create<Store & Action>(
         setRPCAction: (action) => set((state) => {
             state.RPCAction = action;
         }),
-        setRPCData: (fieldId, value) => set((state) => {
-            state.RPCData[fieldId] = value;
+        setRPCData: (fieldId, title, value) => set((state) => {
+            var data = state.RPCData.find(x => x.fieldId == fieldId);
+
+            if(!!data)
+            {
+                data.fieldId = fieldId;
+                data.title = title;
+                data.value = value;
+            }
+            else
+            {
+                state.RPCData.push({
+                    fieldId: fieldId,
+                    title: title,
+                    value: value
+                })
+            }
         }),
         setRPCFormId: (formId) => set((state) => {
             state.RPCFormId = formId;
@@ -177,7 +198,7 @@ export const useStore = create<Store & Action>(
             state.bulkEmployees = null;
             state.RPCActionCategory = null;
             state.RPCAction = null;
-            state.RPCData = null;
+            state.RPCData = [];
             state.RPCDataFields = null;
             state.RPCFormId = null;
             state.RPCId = null;

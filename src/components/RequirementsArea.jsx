@@ -13,7 +13,8 @@ export default function RequirementsArea(props)
 
 	const allCategories = useGetRPCActionCategories();
 	const allActions = useGetRPCActions();
-	const allFields = useGetRPCActionFields(globalStore?.RPCAction?.rpcActionId);
+	//const allFields = useGetRPCActionFields(globalStore?.RPCAction?.rpcActionId);
+	const allFields = useGetRPCActionFields(31);
 
 	useEffect(() => {
 		if(allFields.isSuccess)
@@ -29,8 +30,7 @@ export default function RequirementsArea(props)
 		}
 	}, [allActions]);
 
-	console.log(globalStore.RPCDataFields)
-
+	console.log(globalStore.RPCData)
 	return(
 		<div className="p-5 border shadow rounded h-full bg-white">
 			<div className="flex flex-row justify-between items-center bg-blue-300 -m-5 mb-5 p-5 rounded-t">
@@ -84,7 +84,15 @@ export default function RequirementsArea(props)
 			<div className="flex flex-col justify-start space-x-3 w-full">
 				{!!globalStore.RPCDataFields && globalStore.RPCDataFields.map(x => (
 					<div key={x.rpcActionFieldId}>
-						<FieldContainer label={x.title} name={x.title} type={x.fieldType}/>
+						<FieldContainer
+						label={x.title} 
+						name={x.title} 
+						type={x.fieldType} 
+						options={x.radioOptions} 
+						isRequired={x.isRequired}
+						value={globalStore?.RPCData?.find(data => data.fieldId == x.rpcActionFieldId)?.value ?? ''}
+						onChange={value => globalStore?.setRPCData(x.rpcActionFieldId, x.title, value)}
+						/>
 					</div>
 				))}
 

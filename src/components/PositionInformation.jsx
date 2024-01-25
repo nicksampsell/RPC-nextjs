@@ -2,6 +2,7 @@
 import {useRef, useEffect} from 'react'
 import {useStore} from '@/app/editor/globalStore'
 import { useGetPositions } from '@/queries/fetch.hooks';
+import { useStepConversion } from '../hooks/employee.hooks'
 
 export default function PositionInformation(props)
 {
@@ -19,6 +20,21 @@ export default function PositionInformation(props)
 		}
 
 	}, [allPositions]);
+	
+	useEffect(() => {
+
+		const currentStep = useStepConversion(globalStore?.currentEmployee?.employeePositions?.filter(x => x.status == 1)?.[0]?.step)
+		const currentPosition = globalStore.allPositions?.find(x => x.positionId == globalStore?.allEmployees?.find(x => x.employeeId == globalStore.currentEmployee?.employeeId)?.positions[0]?.positionId)
+
+		globalStore.setCurrentPosition(currentPosition)
+		globalStore.setCurrentPositionSchedule(currentPosition?.schedule[0])
+
+		globalStore.setStep(currentStep)
+		globalStore.setWage(currentPosition?.payScales?.[0]?.wages?.find(x => x.stepTitle == currentStep)?.wage)
+
+
+
+	}, [globalStore.currentPosition, globalStore.step, globalStore.currentEmployee])
 
 
 

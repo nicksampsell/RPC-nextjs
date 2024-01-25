@@ -1,8 +1,18 @@
 'use client'
-import { useState, useId } from 'react';
+import { useState, useId, useRef } from 'react';
 import clsx from 'clsx';
+import CheckboxField from './CheckboxField';
+import DateField from './DateField';
+import FileField from './FileField';
+import InputField from './InputField';
+import TipTap from './TipTap';
+import SelectField from './SelectField';
+
+
+
 export default function FieldContainer(props) {
     const instance = useId();
+    const inputRef = useRef()
 
     const convertEnumToType = (val) => {
         switch(parseInt(val))
@@ -30,96 +40,55 @@ export default function FieldContainer(props) {
             case 10:
                 return 'toggle';
             case 11:
-                return 'checkboxes';
+                return 'checkbox';
             default:
                 return 'text';
             
         }
     }
 
-    console.log(props?.label)
-    console.log(convertEnumToType(props?.type))
+
+    
+
+    const baseClass = "p-3 font-medium rounded-md w-full border border-slate-300 placeholder:opacity-60";
     return (
         <div>
             <label htmlFor={instance}>{props?.label}</label>
             {(convertEnumToType(props?.type) == "plaintext") ? (
-                <textarea
-                    name={props?.name}
+                <InputField 
+                    type="textarea" 
+                    className={clsx(baseClass, props?.className)} 
                     id={instance}
+                    onChange={e => props?.onChange(e.target.value)}
                     value={props?.value ?? ''}
-                    onChange={e => props?.onChange(e)}
-                    className={clsx(props?.className)}></textarea>
+                    />
             ) : (convertEnumToType(props?.type) == "richtext") ? (
-                <textarea
+                <TipTap
                 name={props?.name}
                 id={instance}
                 value={props?.value ?? ''}
                 onChange={e => props?.onChange(e)}
-                className={clsx(props?.className)}></textarea>
+                className={clsx(baseClass, props?.className)} />
             ) : (convertEnumToType(props?.type) == "file") ? (
                 <input type="file"
-                name={props?.name}
-                id={instance}
-                value={props?.value ?? ''}
-                onChange={e => props?.onChange(e)}
-                className={clsx(props?.className)}
-                />
-            ) : (convertEnumToType(props?.type) == "date") ? (
-                <input 
-                    type="date"
                     name={props?.name}
                     id={instance}
                     value={props?.value ?? ''}
                     onChange={e => props?.onChange(e)}
-                    className={clsx(props?.className)}
+                    className={clsx(baseClass, props?.className)} 
                 />
-            ) : (convertEnumToType(props?.type) == "dateTime") ? (
-                <input 
-                    type="datetime-local"
+            ) : (
+                convertEnumToType(props?.type) == "date" || convertEnumToType(props?.type) == "dateTime" ||
+                convertEnumToType(props?.type) == "dateSpan" || convertEnumToType(props?.type) == "dateTimeSpan"
+            ) ? (
+                <DateField
+                    type={convertEnumToType(props?.type)}
                     name={props?.name}
                     id={instance}
                     value={props?.value ?? ''}
-                    onChange={e => props?.onChange(e)}
-                    className={clsx(props?.className)}
+                    onChange={e => props?.onChange(e.target.value)}
+                    className={clsx(baseClass, props?.className)} 
                 />
-            ) : (convertEnumToType(props?.type) == "dateSpan") ? (
-                <>
-                <input 
-                    type="date"
-                    name={props?.name}
-                    id={instance + '-start'}
-                    value={props?.value ?? ''}
-                    onChange={e => props?.onChange(e)}
-                    className={clsx(props?.className)}
-                />
-                <input 
-                    type="date"
-                    name={props?.name}
-                    id={instance + '-end'}
-                    value={props?.value ?? ''}
-                    onChange={e => props?.onChange(e)}
-                    className={clsx(props?.className)}
-                />
-                </>             
-            ) : (convertEnumToType(props?.type) == "dateTimeSpan") ? (
-                <>
-                <input 
-                    type="datetime-local"
-                    name={props?.name}
-                    id={instance + '-start'}
-                    value={props?.value ?? ''}
-                    onChange={e => props?.onChange(e)}
-                    className={clsx(props?.className)}
-                />
-                <input 
-                    type="datetime-local"
-                    name={props?.name}
-                    id={instance + '-end'}
-                    value={props?.value ?? ''}
-                    onChange={e => props?.onChange(e)}
-                    className={clsx(props?.className)}
-                />
-                </>             
             ) : (convertEnumToType(props?.type) == "money") ? (
                 <input 
                     type="text"
@@ -127,26 +96,29 @@ export default function FieldContainer(props) {
                     id={instance}
                     value={props?.value ?? ''}
                     onChange={e => props?.onChange(e)}
-                    className={clsx(props?.className)}
+                    className={clsx(baseClass, props?.className)} 
                 />
                 ) : (convertEnumToType(props?.type) == "radio") ? (
-                    <input 
+
+                    <CheckboxField 
                         type="radio"
                         name={props?.name}
                         id={instance}
                         value={props?.value ?? ''}
                         onChange={e => props?.onChange(e)}
-                        className={clsx(props?.className)}
+                        className={clsx(baseClass, props?.className)} 
+                        options={props?.options}
                     />
                 ) : (convertEnumToType(props?.type) == "checkbox") ? (
-                    <input 
-                        type="date"
+                    <CheckboxField 
+                        type="checkbox"
                         name={props?.name}
                         id={instance}
                         value={props?.value ?? ''}
                         onChange={e => props?.onChange(e)}
-                        className={clsx(props?.className)}
-                    /> 
+                        className={clsx(baseClass, props?.className)} 
+                        options={props?.options}
+                    />
                 ) : (convertEnumToType(props?.type) == "toggle") ? (
                     <>
                     <p>Togglee</p>
@@ -156,18 +128,17 @@ export default function FieldContainer(props) {
                         id={instance}
                         value={props?.value ?? ''}
                         onChange={e => props?.onChange(e)}
-                        className={clsx(props?.className)}
+                        className={clsx(baseClass, props?.className)} 
                     />
                     </>
                 ) : (
-                    <input 
-                    type="text"
-                    name={props?.name}
-                    id={instance}
-                    value={props?.value ?? ''}
-                    onChange={e => props?.onChange(e)}
-                    className={clsx(props?.className)}
-                />                    
+                    <InputField 
+                        type={props?.type ?? "text"} 
+                        className={clsx(baseClass, props?.className)} 
+                        id={instance}
+                        onChange={e => props?.onChange(e.target.value)}
+                        value={props?.value ?? ''}
+                    />                
                 )}                                                     
         </div>
     )

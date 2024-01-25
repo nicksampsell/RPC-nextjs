@@ -1,5 +1,9 @@
 export const useStepConversion = (step) => {
-    
+    if(!step)
+    {
+        return step;
+    }
+
     switch(step.toLowerCase())
     {
         case 'entry':

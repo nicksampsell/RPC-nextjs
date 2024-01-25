@@ -8,6 +8,7 @@ export function SSNFieldNewEmployee(props)
         <div className="flex flex-col md:flex-row justifyt-between md:space-y-3 w-full bg-yellow-100 rounded p-5 gap-5 justify-items-between items-center border-yellow-200 border shadow-sm">
             <div className="w-full md:w-1/2">
                 <SSNField 
+                isNewEmployee={true}
                 value={props?.value ?? ''}
                 onChange={e => props?.onChange(e)}
                 {...props}
@@ -33,7 +34,7 @@ export function SSNField(props)
                 {!!obscure ? (
                 <input type="password"
                 id="ssn" 
-                value={props?.value ?? ''}
+                value={props?.value ?? (!!props.isNewEmployee ? '' : '***********')}
                 format="###-##-####"
                 onChange={e => props?.onChange(e)}
                 className={inputClass} />
