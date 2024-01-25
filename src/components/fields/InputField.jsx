@@ -8,7 +8,8 @@ export default function InputField(props) {
                     id={props?.id}
                     value={props?.value ?? ''}
                     onChange={e => props?.onChange(e)}
-                    className={clsx(props?.className)}></textarea>
+                    className={clsx(props?.className)}
+                    { ...register(props?.name, { required: props?.isRequired ?? false })}></textarea>
         ) : (
             <input 
                 type={props?.type ?? "text"}
@@ -17,6 +18,7 @@ export default function InputField(props) {
                 value={props?.value ?? ''}
                 onChange={e => props?.onChange(e)}
                 className={clsx(props?.className)}
+                { ...register(props?.name, { required: props?.isRequired ?? false })}
             /> 
         )}
         </>

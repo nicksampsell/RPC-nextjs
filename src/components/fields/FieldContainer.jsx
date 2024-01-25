@@ -61,6 +61,7 @@ export default function FieldContainer(props) {
                     id={instance}
                     onChange={e => props?.onChange(e.target.value)}
                     value={props?.value ?? ''}
+                    { ...register(props?.name, { required: props?.isRequired })}
                     />
             ) : (convertEnumToType(props?.type) == "richtext") ? (
                 <TipTap
@@ -68,7 +69,8 @@ export default function FieldContainer(props) {
                 id={instance}
                 value={props?.value ?? ''}
                 onChange={e => props?.onChange(e)}
-                className={clsx(baseClass, props?.className)} />
+                className={clsx(baseClass, props?.className)} 
+                isRequired={props?.isRequired}/>
             ) : (convertEnumToType(props?.type) == "file") ? (
                 <input type="file"
                     name={props?.name}
@@ -76,6 +78,7 @@ export default function FieldContainer(props) {
                     value={props?.value ?? ''}
                     onChange={e => props?.onChange(e)}
                     className={clsx(baseClass, props?.className)} 
+                    isRequired={props?.isRequired ?? false}
                 />
             ) : (
                 convertEnumToType(props?.type) == "date" || convertEnumToType(props?.type) == "dateTime" ||
@@ -88,6 +91,7 @@ export default function FieldContainer(props) {
                     value={props?.value ?? ''}
                     onChange={e => props?.onChange(e.target.value)}
                     className={clsx(baseClass, props?.className)} 
+                    isRequired={props?.isRequired}
                 />
             ) : (convertEnumToType(props?.type) == "money") ? (
                 <input 
@@ -97,6 +101,7 @@ export default function FieldContainer(props) {
                     value={props?.value ?? ''}
                     onChange={e => props?.onChange(e)}
                     className={clsx(baseClass, props?.className)} 
+                    { ...register(props?.name, { required: props?.isRequired })}
                 />
                 ) : (convertEnumToType(props?.type) == "radio") ? (
 
@@ -108,6 +113,7 @@ export default function FieldContainer(props) {
                         onChange={e => props?.onChange(e)}
                         className={clsx(baseClass, props?.className)} 
                         options={props?.options}
+                        isRequired={props?.isRequired}
                     />
                 ) : (convertEnumToType(props?.type) == "checkbox") ? (
                     <CheckboxField 
@@ -118,10 +124,11 @@ export default function FieldContainer(props) {
                         onChange={e => props?.onChange(e)}
                         className={clsx(baseClass, props?.className)} 
                         options={props?.options}
+                        isRequired={props?.isRequired}
                     />
                 ) : (convertEnumToType(props?.type) == "toggle") ? (
                     <>
-                    <p>Togglee</p>
+                    <p>Toggle</p>
                     <input 
                         type="checkbox"
                         name={props?.name}
@@ -129,6 +136,7 @@ export default function FieldContainer(props) {
                         value={props?.value ?? ''}
                         onChange={e => props?.onChange(e)}
                         className={clsx(baseClass, props?.className)} 
+                        isRequired={props?.isRequired}
                     />
                     </>
                 ) : (
@@ -138,6 +146,7 @@ export default function FieldContainer(props) {
                         id={instance}
                         onChange={e => props?.onChange(e.target.value)}
                         value={props?.value ?? ''}
+                        isRequired={props?.isRequired}
                     />                
                 )}                                                     
         </div>

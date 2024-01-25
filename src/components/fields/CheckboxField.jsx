@@ -31,6 +31,7 @@ export default function CheckboxFields(props)
                         value={x.value}
                         checked={currentValue.includes(x.value)}
                         onChange={e => handleChange(e.target.value)}
+                        { ...register(props?.name)}
                         />
                     <label htmlFor={props?.id + '-' + index}>{x.value}</label>
                 </li>

@@ -12,7 +12,9 @@ export default function DateField(props) {
                     id={props?.id + '-start'}
                     value={props?.value ?? ''}
                     onChange={e => props?.onChange(e)}
-                    className={clsx(props?.className)} />
+                    className={clsx(props?.className)} 
+                    { ...register(props?.name, { required: props?.isRequired ?? false})}
+                    />
             </div>
             {(props?.type == "dateSpan" || props.type == "dateTimeSpan") && (
                 <div class="grow-1">
@@ -24,6 +26,7 @@ export default function DateField(props) {
                         value={props?.value ?? ''}
                         onChange={e => props?.onChange(e)}
                         className={clsx(props?.className)}
+                        { ...register(props?.name, { required: props?.isRequired ?? false })}
                     />
                 </div>
             )}
