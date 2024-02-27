@@ -1,8 +1,11 @@
+'use client'
 import clsx from 'clsx';
 import { useState } from 'react';
+import { useFormContext } from "react-hook-form"
 export default function CheckboxFields(props) 
 {
-    const [currentValue, setValue] = useState([props?.value]);
+    const [currentValue, setCurrentValue] = useState([props?.value]);
+    const { register } = useFormContext();
 
     const handleChange = (val) => {
         if(!props.type || props.type == "checkbox")
@@ -10,12 +13,12 @@ export default function CheckboxFields(props)
             let newState = currentValue.includes(val) ? [...currentValue.filter(x => x != val)] : [...currentValue, val];
 
             props.onChange(newState);
-            setValue(newState);
+            setCurrentValue(newState);
         }
         else
         {
             props.onChange(val);
-            setValue([val]);
+            setCurrentValue([val]);
         }
     }
 

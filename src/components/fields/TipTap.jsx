@@ -1,3 +1,4 @@
+'use client'
 import clsx from 'clsx'
 import { useFormContext, useController} from 'react-hook-form'
 import { forwardRef, useState, useRef, useMemo, useEffect } from 'react'
@@ -222,7 +223,9 @@ const TipTap = forwardRef(function({id, type, name, className, value, register, 
     }
 	})
 
-
+// Summary: Creates a debounced function to update a value asynchronously,
+// using useRef to maintain a stable reference across renders.
+// Note: utilizes lodash.debounce
 const debouncedValueSync = useRef(
   debounce(async (value) => {
     setValue(name, value)

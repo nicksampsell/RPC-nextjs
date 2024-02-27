@@ -86,7 +86,7 @@ export default function RequirementsArea(props)
 					<div key={x.rpcActionFieldId}>
 						<FieldContainer
 						label={x.title} 
-						name={x.title} 
+						name={`field_${x.rpcActionFieldId}`} 
 						type={x.fieldType} 
 						options={x.radioOptions} 
 						isRequired={x.isRequired}

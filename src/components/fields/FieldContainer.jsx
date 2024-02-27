@@ -5,15 +5,14 @@ import CheckboxField from './CheckboxField';
 import DateField from './DateField';
 import FileField from './FileField';
 import InputField from './InputField';
-import TipTap from './TipTap';
+import TipTap2 from './TipTap2';
 import SelectField from './SelectField';
-
+import { useFormContext } from "react-hook-form"
 
 
 export default function FieldContainer(props) {
     const instance = useId();
-    const inputRef = useRef()
-
+    const { register } = useFormContext();
     const convertEnumToType = (val) => {
         switch(parseInt(val))
         {
@@ -64,13 +63,14 @@ export default function FieldContainer(props) {
                     { ...register(props?.name, { required: props?.isRequired })}
                     />
             ) : (convertEnumToType(props?.type) == "richtext") ? (
-                <TipTap
-                name={props?.name}
-                id={instance}
-                value={props?.value ?? ''}
-                onChange={e => props?.onChange(e)}
-                className={clsx(baseClass, props?.className)} 
-                isRequired={props?.isRequired}/>
+                <TipTap2
+                    name={props?.name}
+                    id={instance}
+                    value={props?.value ?? ''}
+                    onChange={e => props?.onChange(e)}
+                    className={clsx(baseClass, props?.className)} 
+                    isRequired={props?.isRequired}
+                />
             ) : (convertEnumToType(props?.type) == "file") ? (
                 <input type="file"
                     name={props?.name}
@@ -78,7 +78,6 @@ export default function FieldContainer(props) {
                     value={props?.value ?? ''}
                     onChange={e => props?.onChange(e)}
                     className={clsx(baseClass, props?.className)} 
-                    isRequired={props?.isRequired ?? false}
                 />
             ) : (
                 convertEnumToType(props?.type) == "date" || convertEnumToType(props?.type) == "dateTime" ||
@@ -94,15 +93,7 @@ export default function FieldContainer(props) {
                     isRequired={props?.isRequired}
                 />
             ) : (convertEnumToType(props?.type) == "money") ? (
-                <input 
-                    type="text"
-                    name={props?.name}
-                    id={instance}
-                    value={props?.value ?? ''}
-                    onChange={e => props?.onChange(e)}
-                    className={clsx(baseClass, props?.className)} 
-                    { ...register(props?.name, { required: props?.isRequired })}
-                />
+                <>Money</>
                 ) : (convertEnumToType(props?.type) == "radio") ? (
 
                     <CheckboxField 
@@ -127,18 +118,7 @@ export default function FieldContainer(props) {
                         isRequired={props?.isRequired}
                     />
                 ) : (convertEnumToType(props?.type) == "toggle") ? (
-                    <>
-                    <p>Toggle</p>
-                    <input 
-                        type="checkbox"
-                        name={props?.name}
-                        id={instance}
-                        value={props?.value ?? ''}
-                        onChange={e => props?.onChange(e)}
-                        className={clsx(baseClass, props?.className)} 
-                        isRequired={props?.isRequired}
-                    />
-                    </>
+                    <>Toggle</>
                 ) : (
                     <InputField 
                         type={props?.type ?? "text"} 
